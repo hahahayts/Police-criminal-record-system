@@ -79,7 +79,7 @@ const submit = () => {
                     <TextInput
                         id="email"
                         type="email"
-                        class="mt-1 block w-full border-gray-300 focus:border-blue-700 focus:ring focus:ring-blue-200"
+                        class="text-black mt-1 block w-full border-gray-300 focus:border-blue-700 focus:ring focus:ring-blue-200"
                         v-model="form.email"
                         required
                         autofocus
@@ -99,7 +99,7 @@ const submit = () => {
                     <TextInput
                         id="password"
                         type="password"
-                        class="mt-1 block w-full border-gray-300 focus:border-blue-700 focus:ring focus:ring-blue-200"
+                        class="text-black mt-1 block w-full border-gray-300 focus:border-blue-700 focus:ring focus:ring-blue-200"
                         v-model="form.password"
                         required
                         autocomplete="current-password"
