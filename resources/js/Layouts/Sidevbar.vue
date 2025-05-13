@@ -25,24 +25,6 @@
                     </svg>
                     <h1 class="text-2xl font-bold">Police System</h1>
                 </div>
-                <!-- <button
-                    class="hover:bg-[#233863] p-2 rounded-full transition-colors"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
-                </button> -->
             </div>
 
             <nav class="space-y-2">
@@ -88,7 +70,11 @@
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                             />
                         </svg>
-                        <span class="font-medium">Crime Reports</span>
+                        <span class="font-medium">{{
+                            role === "admin"
+                                ? "All Crime Reports"
+                                : "My Reports"
+                        }}</span>
                         <span
                             class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full"
                         >
@@ -166,7 +152,7 @@
                     </a>
                 </div>
 
-                <div class="group">
+                <div v-if="role === 'admin'" class="group">
                     <a
                         href="#"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
@@ -231,10 +217,17 @@
                         class="w-10 h-10 rounded-full"
                     />
                     <div>
-                        <p class="font-semibold text-sm">Officer Smith</p>
-                        <p class="text-xs text-blue-300">Administrator</p>
+                        <p class="font-semibold text-sm capitalize">
+                            {{ user.name }}
+                        </p>
+                        <p class="text-xs text-blue-300">
+                            {{ role === "admin" ? "Administrator" : "User" }}
+                        </p>
                     </div>
-                    <button
+                    <Link
+                        :href="route('logout')"
+                        method="post"
+                        as="button"
                         class="ml-auto hover:bg-[#2C4777] p-2 rounded-full transition-colors"
                     >
                         <svg
@@ -251,7 +244,7 @@
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                             />
                         </svg>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </aside>
@@ -262,5 +255,10 @@
 </template>
 
 <script setup>
-// You can add any additional sidebar functionality here if needed
+import { Link, usePage } from "@inertiajs/vue3";
+
+const user = usePage().props.auth.user;
+const role = user.hasRole;
+
+console.log(user.hasRole);
 </script>
