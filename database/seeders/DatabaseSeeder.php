@@ -21,7 +21,11 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            RolesAndPermissionSeeder::class
+            RolesAndPermissionSeeder::class,
+            CrimeSeeder::class,
+            SuspectSeeder::class,
+            OfficerSeeder::class,
+            EvidenceSeeder::class
         ]);
     }
 }

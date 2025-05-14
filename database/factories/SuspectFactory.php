@@ -16,8 +16,16 @@ class SuspectFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
+          return [
+            'crime_id' => 1, // or use a fixed crime ID if already seeded
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'alias' => $this->faker->userName,
+            'age' => $this->faker->numberBetween(18, 60),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'address' => $this->faker->address,
+            'description' => $this->faker->sentence,
+            'status' => $this->faker->randomElement(['at large', 'in custody', 'released']),
         ];
     }
 }

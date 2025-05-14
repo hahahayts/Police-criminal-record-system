@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Crime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class CrimeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Crime::factory(50)->create();
     }
 }

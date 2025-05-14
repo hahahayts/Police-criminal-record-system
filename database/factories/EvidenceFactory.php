@@ -16,8 +16,14 @@ class EvidenceFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
+           return [
+            'crime_id' => 1, // or use existing crime ID when seeding
+            'type' => $this->faker->randomElement(['Weapon', 'CCTV Footage', 'Document', 'Fingerprint', 'Clothing']),
+            'name' => $this->faker->words(2, true), // e.g., "Knife Handle", "Security Video"
+            'description' => $this->faker->sentence,
+            'file_path' => null, // Or simulate a file path like 'uploads/evidence1.jpg'
+            'date_collected' => $this->faker->date(),
+            'collected_by' => $this->faker->name,
         ];
     }
 }
