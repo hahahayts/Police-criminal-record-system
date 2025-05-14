@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('officers', function (Blueprint $table) {
             $table->id();
+
+            // Officer details
+            $table->string('badge_number')->unique();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('rank')->nullable(); // e.g., "Sergeant", "Chief Inspector"
+            $table->string('contact_number')->nullable();
+            $table->string('email')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('address')->nullable();
+            $table->boolean('active')->default(true); // currently assigned or not
+
             $table->timestamps();
         });
     }
@@ -25,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('officers');
     }
 };
+

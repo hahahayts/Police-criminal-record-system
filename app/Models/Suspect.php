@@ -9,4 +9,12 @@ class Suspect extends Model
 {
     /** @use HasFactory<\Database\Factories\SuspectFactory> */
     use HasFactory;
+
+    protected $guarded = [];
+
+     public function crimes()
+    {
+        return $this->belongsToMany(Crime::class, 'crime_suspect');
+    }
+
 }

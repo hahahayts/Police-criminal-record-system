@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('evidence', function (Blueprint $table) {
             $table->id();
+
+            // Link to the crime
+            $table->foreignId('crime_id')->constrained()->onDelete('cascade');
+
+            // Evidence details
+            $table->string('type'); // e.g., "Weapon", "CCTV Footage", "Document"
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('file_path')->nullable(); // optional if there's an uploaded file/image
+            $table->date('date_collected')->nullable();
+            $table->string('collected_by')->nullable(); // Officer name or ID
+
             $table->timestamps();
         });
     }
