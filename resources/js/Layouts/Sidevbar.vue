@@ -52,8 +52,8 @@
                 </div>
 
                 <div class="group">
-                    <a
-                        href="#"
+                    <Link
+                        href="/reports"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
                     >
                         <svg
@@ -75,12 +75,7 @@
                                 ? "All Crime Reports"
                                 : "My Reports"
                         }}</span>
-                        <span
-                            class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full"
-                        >
-                            12
-                        </span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div class="group">
