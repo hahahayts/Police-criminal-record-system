@@ -12,4 +12,7 @@ class PagesController extends Controller
     public function manageUsers(){
         return inertia('Users/Index');
     }
+    public function suspects(){
+        return inertia('Suspects/Index');
+    }
 }

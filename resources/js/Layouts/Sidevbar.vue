@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen bg-gray-100">
+    <div class="flex min-h-screen">
         <!-- Enhanced Sidebar -->
         <aside
             class="w-72 bg-[#1A2B47] text-white p-6 space-y-6 shadow-xl relative"
@@ -29,8 +29,8 @@
 
             <nav class="space-y-2">
                 <div class="group">
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
                     >
                         <svg
@@ -48,7 +48,7 @@
                             />
                         </svg>
                         <span class="font-medium">Dashboard</span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div class="group">
@@ -84,8 +84,8 @@
                 </div>
 
                 <div class="group">
-                    <a
-                        href="#"
+                    <Link
+                        href="/suspects"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
                     >
                         <svg
@@ -103,7 +103,7 @@
                             />
                         </svg>
                         <span class="font-medium">Suspects</span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div class="group">
@@ -249,8 +249,9 @@
             </div>
         </aside>
 
-        <!-- Main Content Area -->
-        <slot />
+        <main class="flex-1 p-6">
+            <slot />
+        </main>
     </div>
 </template>
 
