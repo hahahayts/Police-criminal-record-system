@@ -31,6 +31,9 @@ const reportTypes = [
     "Other",
 ];
 
+// Define status options
+const statusOptions = ["open", "under investigation", "closed"];
+
 // Create form using Inertia's useForm
 const form = useForm({
     title: "",
@@ -39,11 +42,13 @@ const form = useForm({
     location: "",
     incident_date: "",
     reported_by: "",
+    status: "open", // Default status is 'open'
 });
 
 // Handle form submission
 const submit = () => {
-    form.post(route("reports.store"), {
+    // alert(form);
+    form.post(route("create.report"), {
         onSuccess: () => {
             closeModal();
             form.reset();
@@ -161,66 +166,34 @@ form.incident_date = today;
                         />
                     </div>
 
-                    <!-- Reported By (added to balance columns) -->
+                    <!-- Status (replaces Priority Level) -->
                     <div>
                         <InputLabel
-                            for="reported_by"
-                            value="Reported By"
+                            for="status"
+                            value="Status"
                             class="font-medium text-gray-700"
                         />
-                        <TextInput
-                            id="reported_by"
-                            type="text"
-                            v-model="form.reported_by"
-                            class="mt-1 block w-full shadow-sm rounded-md"
-                            placeholder="Your name or department"
-                        />
+                        <select
+                            id="status"
+                            v-model="form.status"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
+                            required
+                        >
+                            <option
+                                v-for="option in statusOptions"
+                                :key="option"
+                                :value="option"
+                            >
+                                {{
+                                    option.charAt(0).toUpperCase() +
+                                    option.slice(1)
+                                }}
+                            </option>
+                        </select>
                         <InputError
-                            :message="form.errors.reported_by"
+                            :message="form.errors.status"
                             class="mt-1"
                         />
-                    </div>
-
-                    <!-- Priority Level (visual enhancement) -->
-                    <div>
-                        <InputLabel
-                            for="priority"
-                            value="Priority Level"
-                            class="font-medium text-gray-700"
-                        />
-                        <div class="mt-1 flex space-x-2">
-                            <label
-                                class="flex items-center px-3 py-2 rounded-md border border-gray-300 cursor-pointer hover:bg-gray-50"
-                            >
-                                <input
-                                    type="radio"
-                                    name="priority"
-                                    class="mr-2 text-blue-600"
-                                />
-                                <span class="text-sm">Low</span>
-                            </label>
-                            <label
-                                class="flex items-center px-3 py-2 rounded-md border border-gray-300 cursor-pointer hover:bg-gray-50"
-                            >
-                                <input
-                                    type="radio"
-                                    name="priority"
-                                    class="mr-2 text-blue-600"
-                                    checked
-                                />
-                                <span class="text-sm">Medium</span>
-                            </label>
-                            <label
-                                class="flex items-center px-3 py-2 rounded-md border border-gray-300 cursor-pointer hover:bg-gray-50"
-                            >
-                                <input
-                                    type="radio"
-                                    name="priority"
-                                    class="mr-2 text-blue-600"
-                                />
-                                <span class="text-sm">High</span>
-                            </label>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -232,67 +205,20 @@ form.incident_date = today;
                     value="Description"
                     class="font-medium text-gray-700"
                 />
-                <Textarea
+                <textarea
                     id="description"
                     v-model="form.description"
                     class="mt-1 block w-full rounded-md shadow-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                     rows="5"
                     required
                     placeholder="Describe the incident or issue in detail..."
-                />
+                >
+                </textarea>
                 <p class="mt-1 text-xs text-gray-500">
                     Please include relevant details such as when the incident
                     occurred, who was involved, and any immediate actions taken.
                 </p>
                 <InputError :message="form.errors.description" class="mt-1" />
-            </div>
-
-            <!-- Upload attachment option -->
-            <div class="mt-6">
-                <InputLabel
-                    for="attachment"
-                    value="Attachments (Optional)"
-                    class="font-medium text-gray-700"
-                />
-                <div
-                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:bg-gray-50 cursor-pointer"
-                >
-                    <div class="space-y-1 text-center">
-                        <svg
-                            class="mx-auto h-12 w-12 text-gray-400"
-                            stroke="currentColor"
-                            fill="none"
-                            viewBox="0 0 48 48"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
-                        <div class="flex text-sm text-gray-600">
-                            <label
-                                for="file-upload"
-                                class="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
-                            >
-                                <span>Upload files</span>
-                                <input
-                                    id="file-upload"
-                                    name="file-upload"
-                                    type="file"
-                                    class="sr-only"
-                                    multiple
-                                />
-                            </label>
-                            <p class="pl-1">or drag and drop</p>
-                        </div>
-                        <p class="text-xs text-gray-500">
-                            PNG, JPG, PDF up to 10MB
-                        </p>
-                    </div>
-                </div>
             </div>
 
             <!-- Error Message -->

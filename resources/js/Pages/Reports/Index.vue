@@ -2,7 +2,7 @@
 import Sidevbar from "@/Layouts/Sidevbar.vue";
 import ViewModal from "./ViewModal.vue";
 import CreateReport from "./CreateReport.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import { ref, watch } from "vue";
 
 const props = defineProps({
@@ -26,7 +26,7 @@ const getStatusColor = (status) => {
 };
 
 // Modal state
-const showModal = ref(false);
+const showViewModal = ref(false);
 const showCreateModal = ref(false);
 const selectedReport = ref(null);
 
@@ -53,12 +53,17 @@ watch(searchQuery, (newQuery) => {
 });
 
 const openReportModal = (report) => {
+    // console.log("Opening modal with report:", report);
+    console.log("showViewModal before:", showViewModal.value);
+
     selectedReport.value = report;
-    showModal.value = true;
+    showViewModal.value = true;
+
+    console.log("showViewModal after:", showViewModal.value);
 };
 
 const closeReportModal = () => {
-    showModal.value = false;
+    showViewModal.value = false;
 };
 
 const openCreateModal = () => {
@@ -67,6 +72,12 @@ const openCreateModal = () => {
 
 const closeCreateModal = () => {
     showCreateModal.value = false;
+};
+
+const deleteReport = (id) => {
+    if (confirm("Are you sure you want to delete this report?")) {
+        router.delete(route("delete.report", id));
+    }
 };
 </script>
 
@@ -194,13 +205,14 @@ const closeCreateModal = () => {
                                 </span>
                             </td>
                             <td class="p-3 whitespace-nowrap text-sm">
-                                <button
-                                    @click="openReportModal(report)"
+                                <Link
+                                    :href="route('view.crime', report.id)"
                                     class="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500 transition-colors text-xs font-medium"
                                 >
                                     View
-                                </button>
+                                </Link>
                                 <button
+                                    @click="deleteReport(report.id)"
                                     class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500 transition-colors text-xs font-medium"
                                 >
                                     Delete
@@ -389,7 +401,7 @@ const closeCreateModal = () => {
             <ViewModal
                 v-if="selectedReport"
                 :report="selectedReport"
-                :show="showModal"
+                :show="showViewModal"
                 @close="closeReportModal"
             />
             <!-- Create Report Modal -->

@@ -34,4 +34,10 @@ class PagesController extends Controller
         'reports' => $reports,
     ]);
     }
+
+    public function viewReport($id){
+        $crime = Crime::findOrFail($id);
+
+        return inertia('ViewCrime/Index', ['crime' => $crime]);
+    }
 }
