@@ -12,9 +12,9 @@ class Suspect extends Model
 
     protected $guarded = [];
 
-     public function crimes()
+     public function crime()
     {
-        return $this->belongsTo(Crime::class, 'crime_suspect');
+        return $this->belongsTo(Crime::class);
     }
 
 }

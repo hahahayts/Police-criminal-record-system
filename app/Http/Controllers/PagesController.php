@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Crime;
+use App\Models\Evidence;
 use App\Models\Suspect;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +18,8 @@ class PagesController extends Controller
 
     // Manage Users
     public function manageUsers(){
-        return inertia('Users/Index');
+        
+        return inertia('Users/Index', ['users' => User::latest()->paginate(10)]);
     }
 
     // Suspects
@@ -48,5 +51,12 @@ class PagesController extends Controller
         $crime = Crime::findOrFail($id);
 
         return inertia('ViewCrime/Index', ['crime' => $crime]);
+    }
+
+    // Evidences
+    public function evidences(){
+        return inertia('Evidences/Index', [
+            'evidences' => Evidence::latest()->paginate(10)
+        ]);
     }
 }

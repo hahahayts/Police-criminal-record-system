@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/suspects',[PagesController::class, 'suspects'])->name('suspects');
     Route::get('/reports', [PagesController::class, 'reports'])->name('reports');
     Route::get('/view-crime/{id}',[PagesController::class, 'viewReport'])->name('view.crime');
+    Route::get('/evidences',[PagesController::class, 'evidences'])->name('evidences');
 
 
     Route::post('/create-report',[CrimeController::class, 'store'])->name('create.report');

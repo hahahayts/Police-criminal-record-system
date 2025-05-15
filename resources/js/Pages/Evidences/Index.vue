@@ -1,72 +1,148 @@
 <script setup>
+import { ref, computed } from "vue";
 import Sidevbar from "@/Layouts/Sidevbar.vue";
-import { Link } from "@inertiajs/vue3";
-
-defineProps({
-    suspects: {
+const props = defineProps({
+    evidences: {
         type: Object,
         required: true,
     },
+});
+
+const searchQuery = ref("");
+
+// Filter evidences by name, type, or collected_by
+const filteredEvidences = computed(() => {
+    if (!searchQuery.value.trim()) return props.evidences.data;
+    const query = searchQuery.value.toLowerCase();
+    return props.evidences.data.filter(
+        (evidence) =>
+            (evidence.name && evidence.name.toLowerCase().includes(query)) ||
+            (evidence.type && evidence.type.toLowerCase().includes(query)) ||
+            (evidence.collected_by &&
+                evidence.collected_by.toLowerCase().includes(query))
+    );
 });
 </script>
 
 <template>
     <Sidevbar>
-        <div class="p-6">
-            <h1 class="text-2xl font-bold mb-4">Suspects List</h1>
+        <div class="bg-white text-gray-800 p-4 min-h-screen">
+            <div class="border-b-2 border-gray-300 mb-6 pb-2">
+                <h1 class="text-2xl font-bold tracking-wide text-gray-900">
+                    Evidences
+                </h1>
+                <div class="text-gray-600 text-xs tracking-wide mt-1">
+                    Manage all evidence records in the system.
+                </div>
+            </div>
 
-            <div class="overflow-x-auto">
-                <table
-                    class="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-sm"
+            <!-- Search bar -->
+            <div class="mb-4 max-w-md">
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Search by name, type, or collected by..."
+                    class="w-full pl-8 pr-4 py-2 border border-gray-300 bg-gray-100 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span
+                    class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    >🔍</span
                 >
-                    <thead class="bg-gray-100 text-left">
-                        <tr>
-                            <th class="px-4 py-2">#</th>
-                            <th class="px-4 py-2">Name</th>
-                            <th class="px-4 py-2">Alias</th>
-                            <th class="px-4 py-2">Age</th>
-                            <th class="px-4 py-2">Gender</th>
-                            <th class="px-4 py-2">Address</th>
-                            <th class="px-4 py-2">Status</th>
-                            <th class="px-4 py-2">Crime</th>
+            </div>
+
+            <!-- Evidences table -->
+            <div class="overflow-x-auto rounded-lg shadow">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b border-gray-200">
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                ID
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Crime ID
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Type
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Name
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Description
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                File
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Date Collected
+                            </th>
+                            <th
+                                class="text-left p-3 font-semibold text-sm tracking-wide text-gray-700"
+                            >
+                                Collected By
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="(suspect, index) in suspects.data"
-                            :key="suspect.id"
-                            class="border-b hover:bg-gray-50 transition"
+                            v-for="evidence in filteredEvidences"
+                            :key="evidence.id"
+                            class="hover:bg-gray-50 border-b border-gray-200 transition-colors"
                         >
-                            <td class="px-4 py-2">{{ index + 1 }}</td>
-                            <td class="px-4 py-2">
-                                {{ suspect.first_name }} {{ suspect.last_name }}
+                            <td class="p-3 text-sm">{{ evidence.id }}</td>
+                            <td class="p-3 text-sm">{{ evidence.crime_id }}</td>
+                            <td class="p-3 text-sm">{{ evidence.type }}</td>
+                            <td class="p-3 text-sm font-medium">
+                                {{ evidence.name }}
                             </td>
-                            <td class="px-4 py-2">
-                                {{ suspect.alias ?? "—" }}
+                            <td class="p-3 text-sm">
+                                {{
+                                    evidence.description &&
+                                    evidence.description.length > 50
+                                        ? evidence.description.substring(
+                                              0,
+                                              50
+                                          ) + "..."
+                                        : evidence.description
+                                }}
                             </td>
-                            <td class="px-4 py-2">{{ suspect.age ?? "—" }}</td>
-                            <td class="px-4 py-2">
-                                {{ suspect.gender ?? "—" }}
-                            </td>
-                            <td class="px-4 py-2">
-                                {{ suspect.address ?? "—" }}
-                            </td>
-                            <td class="px-4 py-2">
-                                <span
-                                    :class="{
-                                        'text-green-600':
-                                            suspect.status === 'released',
-                                        'text-yellow-600':
-                                            suspect.status === 'in custody',
-                                        'text-red-600':
-                                            suspect.status === 'at large',
-                                    }"
+                            <td class="p-3 text-sm">
+                                <a
+                                    v-if="evidence.file_path"
+                                    :href="evidence.file_path"
+                                    target="_blank"
+                                    class="text-blue-600 underline"
+                                    >View</a
                                 >
-                                    {{ suspect.status }}
-                                </span>
+                                <span v-else class="text-gray-400">-</span>
                             </td>
-                            <td class="px-4 py-2">
-                                {{ suspect.crime.title }}
+                            <td class="p-3 text-sm">
+                                {{ evidence.date_collected }}
+                            </td>
+                            <td class="p-3 text-sm">
+                                {{ evidence.collected_by }}
+                            </td>
+                        </tr>
+                        <tr v-if="filteredEvidences.length === 0">
+                            <td
+                                colspan="8"
+                                class="text-center py-4 text-gray-500"
+                            >
+                                No evidence found.
                             </td>
                         </tr>
                     </tbody>
@@ -79,8 +155,8 @@ defineProps({
             >
                 <div class="flex flex-1 justify-between sm:hidden">
                     <Link
-                        v-if="suspects.prev_page_url"
-                        :href="suspects.prev_page_url"
+                        v-if="evidences.prev_page_url"
+                        :href="evidences.prev_page_url"
                         class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                         Previous
@@ -93,8 +169,8 @@ defineProps({
                     </span>
 
                     <Link
-                        v-if="suspects.next_page_url"
-                        :href="suspects.next_page_url"
+                        v-if="evidences.next_page_url"
+                        :href="evidences.next_page_url"
                         class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                         Next
@@ -113,12 +189,14 @@ defineProps({
                     <div>
                         <p class="text-sm text-gray-700">
                             Showing
-                            <span class="font-medium">{{ suspects.from }}</span>
+                            <span class="font-medium">{{
+                                evidences.from
+                            }}</span>
                             to
-                            <span class="font-medium">{{ suspects.to }}</span>
+                            <span class="font-medium">{{ evidences.to }}</span>
                             of
                             <span class="font-medium">{{
-                                suspects.total
+                                evidences.total
                             }}</span>
                             results
                         </p>
@@ -131,8 +209,8 @@ defineProps({
                         >
                             <!-- Previous Page Link -->
                             <Link
-                                v-if="suspects.prev_page_url"
-                                :href="suspects.prev_page_url"
+                                v-if="evidences.prev_page_url"
+                                :href="evidences.prev_page_url"
                                 class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                             >
                                 <span class="sr-only">Previous</span>
@@ -170,7 +248,10 @@ defineProps({
 
                             <!-- Pagination Elements -->
                             <template
-                                v-for="(link, i) in suspects.links.slice(1, -1)"
+                                v-for="(link, i) in evidences.links.slice(
+                                    1,
+                                    -1
+                                )"
                                 :key="i"
                             >
                                 <Link
@@ -200,8 +281,8 @@ defineProps({
 
                             <!-- Next Page Link -->
                             <Link
-                                v-if="suspects.next_page_url"
-                                :href="suspects.next_page_url"
+                                v-if="evidences.next_page_url"
+                                :href="evidences.next_page_url"
                                 class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                             >
                                 <span class="sr-only">Next</span>

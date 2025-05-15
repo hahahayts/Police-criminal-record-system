@@ -101,7 +101,7 @@
                     </Link>
                 </div>
 
-                <div class="group">
+                <!-- <div class="group">
                     <a
                         href="#"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
@@ -122,11 +122,11 @@
                         </svg>
                         <span class="font-medium">Investigations</span>
                     </a>
-                </div>
+                </div> -->
 
                 <div class="group">
-                    <a
-                        href="#"
+                    <Link
+                        href="/evidences"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
                     >
                         <svg
@@ -144,7 +144,7 @@
                             />
                         </svg>
                         <span class="font-medium">Evidences</span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div v-if="role === 'admin'" class="group">
@@ -171,8 +171,8 @@
                 </div>
 
                 <div class="group">
-                    <a
-                        href="#"
+                    <Link
+                        href="/settings"
                         class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-[#233863] transition-colors group-hover:bg-opacity-75"
                     >
                         <svg
@@ -196,7 +196,7 @@
                             />
                         </svg>
                         <span class="font-medium">Settings</span>
-                    </a>
+                    </Link>
                 </div>
             </nav>
 
