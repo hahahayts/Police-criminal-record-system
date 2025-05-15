@@ -3,20 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Crime;
+use App\Models\Suspect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
 {
+    // Dashboard
     public function dashboard(){
         return inertia('Dashboard/Index');
     }
+
+    // Manage Users
     public function manageUsers(){
         return inertia('Users/Index');
     }
+
+    // Suspects
     public function suspects(){
-        return inertia('Suspects/Index');
+    $suspects = Suspect::with('crime')->latest()->paginate(10);
+        return inertia('Suspects/Index',['suspects' => $suspects]);
     }
+
+    // Reports
     public function reports(){
         $reports = [];
         $user = Auth::user();

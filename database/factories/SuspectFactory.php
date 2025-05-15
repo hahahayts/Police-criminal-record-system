@@ -17,7 +17,7 @@ class SuspectFactory extends Factory
     public function definition(): array
     {
           return [
-            'crime_id' => 1, // or use a fixed crime ID if already seeded
+            'crime_id' => 1, 
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'alias' => $this->faker->userName,

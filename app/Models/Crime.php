@@ -14,7 +14,7 @@ class Crime extends Model
 
      public function suspects()
     {
-        return $this->belongsToMany(Suspect::class, 'crime_suspect');
+        return $this->hasMany(Suspect::class, 'crime_suspect');
     }
     
     public function evidence()
