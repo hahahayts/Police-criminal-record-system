@@ -206,11 +206,10 @@
                 <div
                     class="flex items-center space-x-3 bg-[#233863] p-3 rounded-lg"
                 >
-                    <img
-                        src="/api/placeholder/40/40"
-                        alt="User Avatar"
-                        class="w-10 h-10 rounded-full"
-                    />
+                    <span
+                        class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-500 capitalize font-bold"
+                        >{{ user.name[0] }}</span
+                    >
                     <div>
                         <p class="font-semibold text-sm capitalize">
                             {{ user.name }}
